@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href= "https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+    <title>Find My Trip</title>
+
+    <style>
+        .cifar{
+            width: 250px;
+            height: 40px;
+        }
+        /* #bar {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+        } */
+        .dropdown {
+            padding : 10px;
+        }
+        #top {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            padding : 0px;
+        }
+        /*52.26*/
+        .login {
+            padding : 18.8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="top">
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="http://www.naver.com">
+                <img src="대문로고.jpg" alt="" width="400" height="100" class="d-inline-block align-text-top">
+            </a>
+        </div>
+    </nav>
+    <div class = "login">
+    <form action="/auth/login" method="POST">
+        <input type="text" name="username" placeholder="아이디"><br>
+        <input type="password" name="password" placeholder="비밀번호"><br>
+        <button type="submit" formmethod="POST">로그인</button>
+    </form>
+        <button onclick="window.open('/auth/register','window_name','width=430,height=500,location=no,status=no,scrollbars=yes');">회원가입</button>
+    </div>
+</div>
+
+<!-- Optional JavaScript; choose one of the two! -->
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+-->
+<div class="row">
+    <div class="col-md-8">
+        <div class id="map" style="width: 100%;height:400px;"></div>
+        <div id="bar">
+            <div class="dropdown">
+                <script>
+                    function changes1Step(fr) {
+                        if(fr=="관광지") {
+                            num = new Array("중분류", "역사관광지","자연관광지","체험관광지","휴양관광지");
+                            vnum = new Array("중분류", "역사관광지","자연관광지","체험관광지","휴양관광지");
+                        }
+                        else if(fr=="레포츠") {
+                            num = new Array("중분류", "수상레포츠","육상레포츠");
+                            vnum = new Array("중분류", "수상레포츠","육상레포츠");
+                        }
+                        else if(fr=="축제/공연/행사") {
+                            num = new Array("중분류", "공연/행사","축제");
+                            vnum = new Array("중분류", "공연/행사","축제");
+                        }
+                        else if(fr=="숙박") {
+                            num = new Array("중분류", "숙박시설");
+                            vnum = new Array("중분류", "숙박시설");
+                        }
+                        else if(fr=="음식") {
+                            num = new Array("중분류", "음식점");
+                            vnum = new Array("중분류", "음식점");
+                        }
+
+                        for(i=0; i<form.Step2.length; i++) {
+                            form.Step2.options[i] = null;
+                        }
+
+                        for(i=0; i<form.Step3.length; i++) {
+                            form.Step3.options[i] = null;
+                        }
+                        form.Step3.options[0] = new Option("소분류", "소분류");
+
+                        for(i=0; i<num.length; i++) {
+                            form.Step2.options[i] = new Option(num[i],vnum[i]);
+                        }
+                    }
+
+
+                    function changes2Step(fr) {
+                        //관광지 선택 "역사관광지","자연관광지","체험관광지","휴양관광지"
+                        if(fr=="역사관광지") {
+                            num = new Array("소분류", "고택", "민속마을","사찰","성","유적지/사적지","종교성지");
+                            vnum = new Array("소분류", "고택", "민속마을","사찰","성","유적지/사적지","종교성지");
+                        }
+                        else if(fr=="자연관광지") {
+                            num = new Array("소분류", "계곡", "공원","동굴","등대","산","섬","수목원","약수터","어촌","자연생태관광지","자연휴양림","폭포","항구/포구","해수욕장","해안절경","호수");
+                            vnum = new Array("소분류", "계곡", "공원","동굴","등대","산","섬","수목원","약수터","어촌","자연생태관광지","자연휴양림","폭포","항구/포구","해수욕장","해안절경","호수");
+                        }
+                        else if(fr=="체험관광지") {
+                            num = new Array("소분류", "관광농원","농.산.어촌 체험","이색거리","이색체험","전통체험");
+                            vnum = new Array("소분류", "관광농원","농.산.어촌 체험","이색거리","이색체험","전통체험");
+                        }
+                        else if(fr=="휴양관광지") {
+                            num = new Array("소분류", "공원","공원단지","온천/욕장/스파","유람선/잠수함관광","테마공원");
+                            vnum = new Array("소분류", "공원","공원단지","온천/욕장/스파","유람선/잠수함관광","테마공원");
+                        }
+                        //레포츠 선택
+                        else if(fr=="수상레포츠") {
+                            num = new Array("소분류", "바다낚시", "수영","스노쿨링/스킨스쿠버다이빙","요트","윈드서핑/제트스키","카약/카누");
+                            vnum = new Array("소분류", "바다낚시", "수영","스노쿨링/스킨스쿠버다이빙","요트","윈드서핑/제트스키","카약/카누");
+                        }
+                        else if(fr=="육상레포츠") {
+                            num = new Array("소분류", "경기장","골프","사격장","수련시설","승마","자전거하이킹","카지노","카트","트래킹");
+                            vnum = new Array("소분류", "경기장","골프","사격장","수련시설","승마","자전거하이킹","카지노","카트","트래킹");
+                        }
+
+                        //축제 선택
+                        else if(fr=="공연/행사") {
+                            num = new Array("소분류", "기타행사", "박람회");
+                            vnum = new Array("소분류", "기타행사", "박람회");
+                        }
+                        else if(fr=="축제") {
+                            num = new Array("소분류", "축제");
+                            vnum = new Array("소분류", "축제");
+                        }
+
+                        //숙박 선택
+                        else if(fr=="숙박시설") {
+                            num = new Array("소분류", "가족호텔","게스트하우스","관광호텔","모텔","민박","소형호텔","유스호스텔","콘도미니엄","펜션");
+                            vnum = new Array("소분류", "가족호텔","게스트하우스","관광호텔","모텔","민박","소형호텔","유스호스텔","콘도미니엄","펜션");
+                        }
+
+                        //음식 선택
+                        else if(fr=="음식점") {
+                            num = new Array("소분류", "바/카페","서양식","아시아식","이색음식점","일식","중식","패밀리레스토랑","한식");
+                            vnum = new Array("소분류", "바/카페","서양식","아시아식","이색음식점","일식","중식","패밀리레스토랑","한식");
+                        }
+                        else
+                        {
+                            num = new Array("소분류");
+                            vnum = new Array("소분류");
+                        }
+
+                        for(i=0; i<form.Step3.length; i++) {
+                            form.Step3.options[i] = null;
+                        }
+                        for(i=0; i<num.length; i++) {
+                            form.Step3.options[i] = new Option(num[i],vnum[i]);
+                        }
+                    }
+                </script>
+
+<!--                <form action="/SWP/10.html" method="post" name='form'>-->
+
+                <form action="/SWP/10.html" method="post" name='form'>
+                <select name="Step1" class="cifar" aria-label=".form-select-sm example" onchange="changes1Step(value)">
+                    <option>대분류</option>
+                    <option value="관광지">관광지</option>
+                    <option value="레포츠">레포츠</option>
+                    <option value="축제/공연/행사">축제/공연/행사</option>
+                    <option value="숙박">숙박</option>
+                    <option value="음식">음식</option>
+                </select>
+                <select name="Step2" class="cifar" aria-label=".form-select-sm example" onchange="changes2Step(value)">
+                    <option>중분류</option>
+                </select>
+                <select name="Step3" class="cifar" aria-label=".form-select-sm example">
+                    <option>소분류</option>
+                </select>
+                <button type="submit" formmethod="POST" class="btn btn-secondary btn-lg">검색</button>
+                <button type="button2" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    직접 추가
+                </button>
+                </form>
+            </div>
+            <div>
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">여행지명을 입력하세요</h5>
+                                <button type="button2" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" class="form-control" placeholder="여행지명" aria-label="Username" aria-describedby="basic-addon1">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                <button type="button" class="btn btn-primary">검색</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style type="text/css">
+                a:link { color: red; text-decoration: none;}
+                a:visited { color: black; text-decoration: none;}
+                a:hover { color: black; text-decoration: underline;}
+            </style>
+        </div>
+    </div>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=af21ed22f4828ca1fdefb48ec7d3d712&libraries=services,clusterer,drawing"></script>
+    <script>
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(33.38261328748391, 126.523559351990683), // 지도의 중심좌표
+                level: 10 // 지도의 확대 레벨
+            };
+
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    </script>
+
+
+
+
+    <div class="col-md-4">
+        <div class="list">
+            <table>
+                <tr>
+                    <td class="value">시간</td>
+                    <td class="value">장소</td>
+                    <td class="value">동작</td>
+                </tr>
+                <tbody>
+                <tr>
+                    <td class="time">06:00</td>
+                    <td class="drop"id="6"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">07:00</td>
+                    <td class="drop"id="7"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">08:00</td>
+                    <td class="drop"id="8"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">09:00</td>
+                    <td class="drop"id="9"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">10:00</td>
+                    <td class="drop"id="10"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">11:00</td>
+                    <td class="drop"id="11"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">12:00</td>
+                    <td class="drop"id="12"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">13:00</td>
+                    <td class="drop"id="13"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">14:00</td>
+                    <td class="drop"id="14"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">15:00</td>
+                    <td class="drop"id="15"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">16:00</td>
+                    <td class="drop"id="16"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">17:00</td>
+                    <td class="drop"id="17"></td>
+                    <td class="do"></td>
+                </tr>
+                <td class="time">18:00</td>
+                <td class="drop"id="18"></td>
+                <td class="do"></td>
+                </tr>
+                <tr>
+                    <td class="time">19:00</td>
+                    <td class="drop"id="19"></td>
+                    <td class="do"></td>
+                </tr>
+                <tr class="20">
+                    <td class="time">20:00</td>
+                    <td class="drop" id="20"></td>
+                    <td class="do"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="item">섭지코지 </div>
+        <div class="card" style="width: 100%;">
+            <img src="그림1.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <p class="card-text">섭지코지는 제주도에 위치한 관광지입니다.</p>
+            </div>
+        </div>
+        <!-- <div class="item">섭지코지 </div><img src="그림1.png" alt="" width=100% height="60"> -->
+    </div>
+    <div class="col-md-2">
+        <div class="item">성산일출봉</div>
+        <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="2000">
+                    <img src="그림1.png" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <p class="text">제주도에 위치한 관광지입니다.</p>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <!-- <div class="item">성산일출봉</div><img src="그림1.png" alt="" width=100% height="60"> -->
+    </div>
+    <div class="col-md-2">
+        <div class="item">카카오 </div><img src="그림1.png" alt="" width=100% height="60">
+    </div>
+    <div class="col-md-2">
+        <div class="item">강정항 </div><img src="그림1.png" alt="" width=100% height="60">
+    </div>
+    <div class="col-md-2">
+        <div class="item">제주공항 </div><img src="그림1.png" alt="" width=100% height="60">
+    </div>
+    <div class="col-md-2">
+        <div class="item">흑돼지 </div><img src="그림1.png" alt="" width=100% height="60">
+    </div>
+</div>
+<style type="text/css">
+    .col-md-2{
+        text-align:center;
+        background:#fafafa;
+    }
+    .item{
+        text-align:center;
+        border:1px solid #e29d1c;
+        background:#fafafa;
+    }
+    .list{
+        width: auto;
+        overflow: auto;
+        border: 1px solid #444444;
+        border-collapse: collapse;
+
+    }
+    .list table{
+        background:#E0ECFF;
+        width:100%;
+    }
+    .list td{
+        background:#ce6ea3;
+        text-align:center;
+        padding:2px;
+        border: 1px solid #444444;
+        background:#E0ECFF;
+    }
+    .list td.time{
+        background:#E0ECFF;
+        width:50px;
+    }
+    .list td.drop{
+        text-align:center;
+        background:#fafafa;
+        width:120px;
+    }
+    .list td.do{
+        background:#fafafa;
+        width:60px;
+    }
+    .list td.over{
+        background:#FBEC88;
+    }
+
+    .assigned{
+        border:1px solid #BC2A4D;
+    }
+
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.1.min.js"></script>
+<script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/jquery.easyui.min.js"></script>
+<script>
+
+    var cnt =0;
+
+    // $('.left .item').draggable({
+    //    revert:true,
+    //    proxy:'clone'
+    // });
+    $('.item').draggable({
+        revert:true,
+        proxy:'clone'
+    });
+    $('.list td.drop').droppable({
+        onDragEnter:function(){
+            $(this).addClass('over');
+        },
+        onDragLeave:function(){
+            $(this).removeClass('over');
+        },
+        onDrop:function(e,source){
+            alert($(this)[0].id);  //도착한 표 id출력
+            $(this).removeClass('over');
+            if ($(source).hasClass('assigned')){    //한번 놓은거 움직이는거
+                $(this).append(source);
+                alert($(this).text());    //관광지명출력
+                //***표에 시간하고 위에 관광지명 변경
+            }
+            else {
+                var c = $(source).clone().addClass('assigned');
+                $(this).empty().append(c);
+                c.draggable({
+                    revert:true
+                });
+                // alert(c.text()); //관광지명
+                //***표에 시간하고 위에 관광지명 추가
+            }
+        }
+    });
+</script>
+
+
+</body>
+</html>
